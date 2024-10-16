@@ -10,22 +10,22 @@ document.getElementById("userForm").addEventListener("submit", function(event){
     const data = { name, email, carPreference };
 
     // Send the data to the backend to save in a text file
-    fetch('/submit', {
+    fetch('http://localhost:3000/submit', {  // Ensure correct port is used
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data),  // This sends data as JSON string
     })
-    .then(response => {
+    .then(response => response.json())
+    .then(data => {
         if (response.ok) {
-            // Redirect the user to the main page
             window.location.href = "/main.html";
         } else {
-            alert('Error submitting form');
+            console.error('Server error:', data.message);
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Fetch error:', error);
     });
 });
